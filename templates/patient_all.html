@@ -8,11 +8,9 @@
         <div class="col md-12">
             <div class="jumbotron p-3">
 
-
-
-                <h2 style="margin-bottom: 1em;"> Manage Patients 
+                <h2 style="margin-bottom: 1em;"> Patient List
                     <button type="button" class="btn btn-success float-right"
-                        data-toggle="modal" data-target="#mymodal">Add New Patient
+                        data-toggle="modal" data-target="#addpatient">Add New Patient
                     </button> 
                 </h2>
 
@@ -44,10 +42,9 @@
                         <th>MRN</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>SSN</th>
-                        <th>Date of Birth</th>
                         <th>Zip Code</th>
-                        <th>Action</th>
+                        <th>Gender</th>
+                        <th>Setting</th>
 
                     </tr>
 
@@ -58,14 +55,12 @@
                         <td>{{row.mrn}}</td>
                         <td>{{row.first_name}}</td>
                         <td>{{row.last_name}}</td>
-                        <td>{{row.ssn}}</td>
-                        <td>{{row.date_of_birth}}</td>
-                        <td>{{row.zip_code}}</td>
-
+                        <td>{{row.zip_code}} </td>
+                        <td>{{row.gender}}</td>
                         <td>
                             <a href="/update/{{row.mrn}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.mrn}}">Edit</a>
                             <a href="/delete/{{row.mrn}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
-                            <a href="/view/{{row.mrn}}" class="btn btn-info btn-xs">View</a>
+                            <a href="/details/{{row.mrn}}" class="btn btn-info btn-xs">Details</a>
                         </td>
 
                     </tr>
@@ -96,17 +91,9 @@
                                     <input type="text" class="form-control" name="last_name" value="{{row.last_name}}">
                                 </div>
                                 <div class="form-group">
-                                    <label>SSN:</label>
-                                    <input type="text" class="form-control" name="ssn" value="{{row.ssn}}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Date of Birth:</label>
-                                    <input type="text" class="form-control" name="date_of_birth" value="{{row.date_of_birth}}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Zip Code:</label>
-                                    <input type="text" class="form-control" name="zip_code" value="{{row.zip_code}}">
-                                </div>
+                                    <label>Gender:</label>
+                                    <input type="text" class="form-control" name="gender" value="{{row.gender}}">
+                                </div> 
                                 <div class="form-group">
                                     <button class="btn btn-primary" type="submit">Update</button>
                                 </div>
@@ -133,41 +120,38 @@
                   <!-- Modal Add Patient-->
 
 
-        <div id="mymodal" class="modal fade" role="dialog">
+        <div id="addpatient" class="modal fade" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Add Patient</h4>
                     </div>
                     <div class="modal-body">
+
                         <form action="{{url_for('insert')}}" method="POST">
-                        <div class="form-group">
-                            <label>MRN:</label>
-                            <input type="text" class="form-control" name="mrn" required="1">
-                        </div>
                             <div class="form-group">
-                            <label>First Name:</label>
-                            <input type="text" class="form-control" name="first_name" required="1">
-                        </div>
+                                <label>Medical Record Number:</label>
+                                <input type="text" class="form-control" name="mrn" required="1">
+                            </div>
                             <div class="form-group">
-                            <label>Last Name:</label>
-                            <input type="text" class="form-control" name="last_name" required="1">
-                        </div>
-                        <div class="form-group">
-                            <label>SSN:</label>
-                            <input type="text" class="form-control" name="ssn" required="1">
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth:</label>
-                            <input type="text" class="form-control" name="date_of_birth" required="1">
-                        </div>
-                        <div class="form-group">
-                            <label>Zip Code:</label>
-                            <input type="text" class="form-control" name="zip_code" required="1">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" type="submit">Add Patient</button>
-                        </div>
+                                <label>First Name:</label>
+                                <input type="text" class="form-control" name="first_name" required="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name:</label>
+                                <input type="text" class="form-control" name="last_name" required="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Zip Code </label>
+                                <input type="text" class="form-control" name="zip_code" required="1">
+                            </div>
+                            <div class="form-group">
+                                <label> Gender </label>
+                                <input type="text" class="form-control" name="gender" required="1">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Add Patient</button>
+                            </div>
                         </form>
 
                     </div>
