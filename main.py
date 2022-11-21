@@ -182,7 +182,7 @@ class Medications(db.Model):
 def index():
     return render_template('lander.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/signin', methods=['GET', 'POST'])
 def login():
     msg = ''
     if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
@@ -415,15 +415,15 @@ def get_patient_details(mrn):
         db_conditions = db_conditions, db_medications = db_medications)
 
 #This route is for getting patient details
-@app.route('/view/<string:mrn>', methods = ['GET'])
-def get_patient_details(mrn):
-    patient_details = Patients.query.filter_by(mrn=mrn).first()
-    patient_conditions = Conditions_patient.query.filter_by(mrn=mrn).all()
-    #patient_medications = Medications_patient.query.filter_by(mrn=mrn).all()   # Uncomment when patient_medications is working
-    db_conditions = Conditions.query.all()
-    return render_template("patient_details.html", patient_details = patient_details, 
-        patient_conditions = patient_conditions, #patient_medications = patient_medications,   # Uncomment when patient_medications is working
-        db_conditions = db_conditions)
+# @app.route('/view/<string:mrn>', methods = ['GET'])
+# def get_patient_details(mrn):
+#     patient_details = Patients.query.filter_by(mrn=mrn).first()
+#     patient_conditions = Conditions_patient.query.filter_by(mrn=mrn).all()
+#     #patient_medications = Medications_patient.query.filter_by(mrn=mrn).all()   # Uncomment when patient_medications is working
+#     db_conditions = Conditions.query.all()
+#     return render_template("patient_details.html", patient_details = patient_details, 
+#         patient_conditions = patient_conditions, #patient_medications = patient_medications,   # Uncomment when patient_medications is working
+#         db_conditions = db_conditions)
 
 @app.route('/update_conditions', methods = ['GET', 'POST'])
 def update_conditions(): # note this function needs to match name in html form action
