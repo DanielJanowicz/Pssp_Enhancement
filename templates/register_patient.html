@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.101.0">
-    <title>Signin Template · Bootstrap v5.2</title>
+    <title>blink health - Patient Registration</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/sign-in/">
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}"> 
 <!-- <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -104,14 +104,10 @@
     </div>
 
     <!-- create single select for sex -->
-    <div class="form-floating">
-        <select class="form-select" id="gender" name="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-        <label for="floatingSelect">User Type</label>
-    </div>
+    <div class="form-floating" style="padding: .2em">
+      <input type="date" class="form-control" id="dob" name="dob" required>
+      <label for="floatingInput">Facility ID</label>
+  </div>
 
 
     <!-- create a drop down of conditions that is multi-select for the patient to choose between -->
