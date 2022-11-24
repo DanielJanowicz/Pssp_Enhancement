@@ -201,6 +201,8 @@ def login():
             db.session.commit()
             if session['account_type'] == 'admin':
                 return redirect(url_for('get_gui_patients'))
+            if session['account_type'] == 'provider':
+                return redirect(url_for('get_gui_patients'))
             elif session['account_type'] == 'patient':
                 ## go to /details/{{row.mrn}} 
                 return redirect(url_for('get_patient_details', mrn=session['mrn']))
@@ -216,6 +218,9 @@ def register():
         if request.form['account_type'] == 'admin':
             # redirect to admin registration page
             return redirect(url_for('register_admin'))
+        elif request.form['account_type'] == 'provider':
+            # redirect to provider registration page
+            return redirect(url_for('register_provider'))
         elif request.form['account_type'] == 'patient':
             # redirect to patient registration page
             return redirect(url_for('register_patient'))
@@ -253,6 +258,39 @@ def register_admin():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('register_admin.html', msg=msg)
+
+
+@app.route('/register/provider', methods=['GET', 'POST'])
+def register_provider():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "username", "password" and "email" POST requests exist (user submitted form)
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+        # Create variables for easy access
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        account_type = 'provider'
+        mrn = None
+        # check if email already exists
+        account = Users.query.filter_by(email=email).first()
+        if account:
+            msg = 'Account already exists !'
+        else:
+            datecreated = datetime.datetime.now()
+            lastlogin = datetime.datetime.now()
+            new_user = Users(username, password, email,
+                             account_type, mrn, datecreated, lastlogin)
+            db.session.add(new_user)
+            db.session.commit()
+            msg = "You have successfully registered a PROVIDER account!"
+    elif request.method == 'POST':
+        # Form is empty... (no POST data)
+        msg = 'Please fill out the form!'
+    # Show registration form with message (if any)
+    return render_template('register_provider.html', msg=msg)
+
+
 
 @app.route('/register/patient', methods=['GET', 'POST'])
 def register_patient():
