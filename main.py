@@ -74,9 +74,11 @@ class Patients(db.Model):
     date_of_birth = db.Column(db.String(255))
     zip_code = db.Column(db.String(255))
     facility = db.Column(db.String(255))
+    contact_mobile = db.Column(db.String(255))
+    contact_email = db.Column(db.String(255))
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, mrn, first_name, last_name, ssn, date_of_birth, zip_code, facility):
+    def __init__(self, mrn, first_name, last_name, ssn, date_of_birth, zip_code, facility, contact_mobile, contact_email):
         self.mrn = mrn
         self.first_name = first_name
         self.last_name = last_name
@@ -84,6 +86,8 @@ class Patients(db.Model):
         self.date_of_birth = date_of_birth
         self.zip_code = zip_code
         self.facility = facility
+        self.contact_mobile = contact_mobile
+        self.contact_email = contact_email
 
     # this second function is for the API endpoints to return JSON 
     def to_json(self):
@@ -95,7 +99,9 @@ class Patients(db.Model):
             'ssn': self.ssn,
             'date_of_birth': self.date_of_birth,
             'zip_code': self.zip_code,
-            'facility': self.facility
+            'facility': self.facility,
+            'contact_mobile': self.contact_mobile,
+            'contact_email': self.contact_email
         }
 
 class Conditions_patient(db.Model):
