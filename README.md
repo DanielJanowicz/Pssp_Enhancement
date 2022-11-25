@@ -13,5 +13,9 @@ Backend SQLserver was updated to accomodate the registration and saving of crede
 ## **For more information on files, navigate to __directory.md__**
 
 
-## Known issue:
+## Known issues:
 Experience with connection patient_conditions to the site due to problems with SQL and defining the foreign key.  This has been an established issue since the first iteration of PssP.
+
+Updating account details prompts an error (username and/or email)
+
+
