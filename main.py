@@ -73,15 +73,17 @@ class Patients(db.Model):
     ssn = db.Column(db.String(255))
     date_of_birth = db.Column(db.String(255))
     zip_code = db.Column(db.String(255))
+    facility = db.Column(db.String(255))
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, mrn, first_name, last_name, ssn, date_of_birth, zip_code):
+    def __init__(self, mrn, first_name, last_name, ssn, date_of_birth, zip_code, facility):
         self.mrn = mrn
         self.first_name = first_name
         self.last_name = last_name
         self.ssn = ssn
         self.date_of_birth = date_of_birth
         self.zip_code = zip_code
+        self.facility = facility
 
     # this second function is for the API endpoints to return JSON 
     def to_json(self):
@@ -92,7 +94,8 @@ class Patients(db.Model):
             'last_name': self.last_name,
             'ssn': self.ssn,
             'date_of_birth': self.date_of_birth,
-            'zip_code': self.zip_code
+            'zip_code': self.zip_code,
+            'facility': self.facility
         }
 
 class Conditions_patient(db.Model):
@@ -136,7 +139,7 @@ class Conditions(db.Model):
         }
 
 class Medications_patient(db.Model):
-    __tablename__ = 'production_patient_medications'
+    __tablename__ = 'production_patients_medications'
 
     id = db.Column(db.Integer, primary_key=True)
     mrn = db.Column(db.String(255), db.ForeignKey('production_patients.mrn'))
@@ -160,19 +163,19 @@ class Medications(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     med_ndc = db.Column(db.String(255))
-    med_human_name = db.Column(db.String(255))
+    med_name = db.Column(db.String(255))
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, med_ndc, med_human_name):
+    def __init__(self, med_ndc, med_name):
         self.med_ndc = med_ndc
-        self.med_human_name = med_human_name
+        self.med_name = med_name
 
     # this second function is for the API endpoints to return JSON
     def to_json(self):
         return {
             'id': self.id,
             'med_ndc': self.med_ndc,
-            'med_human_name': self.med_human_name
+            'med_name': self.med_name
         }
 
 
@@ -319,7 +322,7 @@ def register_patient():
         last_name = request.form['last_name']
         zip_code = request.form['zip_code']
         dob = request.form['dob']
-        gender = request.form['gender']
+        facility = request.form['facility']
         contact_mobile = request.form['contact_mobile']
         contact_home = request.form['contact_home']
 
@@ -337,7 +340,7 @@ def register_patient():
             lastlogin = datetime.datetime.now()
             
             new_user = Users(username, password, email, account_type, mrn, datecreated, lastlogin)
-            new_patient = Patients(mrn, first_name, last_name, zip_code, dob, gender, contact_mobile, contact_home)
+            new_patient = Patients(mrn, first_name, last_name, zip_code, dob, facility, contact_mobile, contact_home)
 
             db.session.add(new_user)
             db.session.commit()
@@ -393,6 +396,9 @@ def get_gui_patients():
     if 'loggedin' in session and session['account_type'] == 'admin':
         returned_Patients = Patients.query.all() # documentation for .query exists: https://docs.sqlalchemy.org/en/14/orm/query.html
         return render_template("patient_all.html", patients = returned_Patients)
+    elif 'loggedin' in session and session['account_type'] == 'provider':
+        returned_Patients = Patients.query.all() # documentation for .query exists: https://docs.sqlalchemy.org/en/14/orm/query.html
+        return render_template("patient_all.html", patients = returned_Patients)
     else:
         return redirect(url_for('get_patient_details', mrn=session['mrn']))
 
@@ -403,9 +409,9 @@ def insert(): # note this function needs to match name in html form action
         mrn = request.form['mrn']
         first_name = request.form['first_name']
         last_name = request.form['last_name']
-        gender = request.form['gender']                                                  # double check
+        facility = request.form['facility']                                                  # double check
         zip_code = request.form['zip_code']
-        new_patient = Patients(mrn, first_name, last_name, gender, zip_code)
+        new_patient = Patients(mrn, first_name, last_name, facility, zip_code)
         db.session.add(new_patient)
         db.session.commit()
         flash("Patient Inserted Successfully")
@@ -423,7 +429,7 @@ def update(): # note this function needs to match name in html form action
         patient = Patients.query.filter_by(mrn=form_mrn).first()
         patient.first_name = request.form.get('first_name')
         patient.last_name = request.form.get('last_name')
-        patient.gender = request.form.get('gender')
+        patient.facility = request.form.get('facility')
         db.session.commit()
         flash("Patient Updated Successfully")
         return redirect(url_for('get_gui_patients'))
